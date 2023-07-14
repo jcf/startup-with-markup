@@ -1,11 +1,9 @@
 ---
-enum Variant {
-  Large = "lg",
-  ExtraLarge = "xl",
-}
+import type { HTMLAttributes } from 'astro/types'
+import { Variant } from '../types/button';
 
-interface Props {
-  variant: Variant;
+interface Props extends HTMLAttributes<'button'> {
+  variant?: Variant;
 }
 
 const defaultSizeClasses = "px-3.5 py-2.5";
