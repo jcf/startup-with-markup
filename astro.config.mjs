@@ -9,7 +9,7 @@ const site = process.env.ASTRO_SITE ?? "https://example.com/";
 
 // https://astro.build/config
 export default defineConfig({
-  output: 'hybrid',
+  output: 'server',
   site: site,
   experimental: {
     assets: true
