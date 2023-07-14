@@ -1,0 +1,13 @@
+#+title: Startup with Markup
+
+* What's in the box?
+We're using Astro and TailwindCSS to generate static markup in front of a
+serverless endpoint that we only pay for when used.
+
+Additionally, Nixpkgs is in place to manage packages, but it is entirely beyond
+the scope of this demo.
+
+* Development
+#+begin_src sh
+pnpm dev
+#+end_src

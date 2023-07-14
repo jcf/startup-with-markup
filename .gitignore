@@ -1,0 +1,6 @@
+.astro/
+.env
+.env.production
+/.devenv/
+dist/
+node_modules/
