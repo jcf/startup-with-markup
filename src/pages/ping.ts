@@ -7,9 +7,19 @@ const formatDate = (date: Date): string => {
   });
 };
 
+const messages = [
+  "😘 KISS: Keep things simple, stupid.",
+  "🧠 Optimise for learning.",
+  "💅 Built by a human",
+  "❤️ Happiness comes from within.",
+  "🌄 It's not the destination, but the journey that counts.",
+];
+
+const pick = (coll) => coll[Math.floor(Math.random() * coll.length)];
+
 export async function post() {
   const body = {
-    msg: 'Keep things simple. Optimise for learning.',
+    msg: pick(messages),
     date: formatDate(new Date()),
   };
 

@@ -1,4 +1,5 @@
 ---
+import { Variant } from '../types/button';
 import Layout from '../layouts/Main.astro';
 import Button from '../components/Button.astro';
 const title = "Startup with Markup";
@@ -6,7 +7,7 @@ const title = "Startup with Markup";
 
 <Layout title={title}>
   <main class="min-h-screen bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-gray-100">
-    <div class="min-h-screen max-w-2xl mx-auto flex flex-col items-start justify-center">
+    <div class="min-h-screen mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col items-start justify-center">
       <div class="space-y-4">
         <h1 class:list={[
           "text-4xl",
@@ -16,24 +17,29 @@ const title = "Startup with Markup";
           "xl:max-w-[43.5rem]"
           ]}>Startup with Markup</h1>
 
-        <p class="font-bold text-2xl">Keep things simple. Optimise for learning.</p>
+        <p class="font-bold text-xl sm:text-2xl">Keep things simple. Optimise for learning.</p>
       </div>
 
-      <Button class="mt-10" id="ping" variant="lg">Ping!</Button>
+      <div class="mt-10 flex flex-row items-center space-x-4">
+        <Button id="ping" variant={Variant.Large}>Ping!</Button>
+        <p id="pong" class="sm:text-lg">👈 Click the button already!</p>
+      </div>
     </div>
   </main>
 </Layout>
 
 <script>
   const button = document.getElementById('ping');
+  const output = document.getElementById('pong');
 
-  if (!button) {
-    console.error('Element with ID "ping" not found in the DOM. Shucks!');
+  if (!button || !output) {
+    console.error('Element with IDs "ping" and "pong" not found in the DOM. Shucks!');
   } else {
     button.addEventListener('click', async () => {
       await fetch('/ping', {method: 'POST'}).then(async (response) => {
         const json = await response.json();
-        console.log("Got a response from the server!", json);
+        console.log('And our server said:', json);
+        output.innerText = json.msg;
       })
     })
   }
