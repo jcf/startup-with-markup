@@ -4,3 +4,4 @@
 /.devenv/
 dist/
 node_modules/
+/.vercel/
