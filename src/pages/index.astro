@@ -2,35 +2,89 @@
 import { Variant } from '../types/button';
 import Layout from '../layouts/Main.astro';
 import Button from '../components/Button.astro';
+import Link from '../components/Link.astro';
 const title = "Startup with Markup";
 ---
 
 <Layout title={title}>
-  <main class="min-h-screen bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-gray-100">
-    <div class="min-h-screen mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col items-start justify-center">
-      <div class="space-y-4">
-        <h1 class:list={[
-          "text-4xl",
-          "font-extrabold",
-          "tracking-tight",
-          "sm:text-7xl",
-          "xl:max-w-[43.5rem]"
-          ]}>Startup with Markup</h1>
+  <div class="flex flex-col min-h-screen bg-neutral-50 dark:bg-neutral-900 dark:text-neutral-100">
+    <main class="pt-8 sm:pt-20 flex-grow text-neutral-800">
+      <div class="min-h-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col items-start justify-center">
+        <div class="space-y-4 max-w-prose">
+          <h1 class:list={[
+            "text-4xl",
+            "font-extrabold",
+            "tracking-tight",
+            "sm:text-7xl",
+            "xl:max-w-[43.5rem]"
+            ]}>Startup with Markup</h1>
 
-        <p class="font-bold text-xl sm:text-2xl">Keep things simple. Optimise for learning.</p>
-      </div>
+          <p class="font-bold text-xl sm:text-2xl">Keep things simple. Optimise for learning.</p>
 
-      <div class="mt-10 flex flex-row items-center space-x-4">
-        <Button id="ping" variant={Variant.Large}>Ping!</Button>
-        <p id="pong" class="sm:text-lg">👈 Click the button already!</p>
+          <p class="text-lg sm:text-xl">
+            This tiny web page demonstrates how one might build a simple web
+            application using a bit of JavaScript. It's easier than you might
+            think!
+          </p>
+
+          <p class="text-lg sm:text-xl">
+            When you click on the Ping button below, your browser will send a
+            request to a tiny JavaScript function running in the cloud.
+          </p>
+
+          <p class="text-lg sm:text-xl">
+            That little cloud function will pick a random message and return it to
+            us so we can render it in the page.
+          </p>
+        </div>
+
+        <div class="my-10 flex flex-row items-center space-x-4">
+          <Button id="ping" variant={Variant.Large}>Ping!</Button>
+          <p id="pong" class="flex flex-col md:flex-row md:space-x-4 sm:text-lg">👈 Click the button already!</p>
+        </div>
+
+        <div class="space-y-4 max-w-prose">
+          <p class="text-lg sm:text-xl">
+            You'll find the
+            <Link href="https://github.com/jcf/startup-with-markup">source code</Link>
+            over on GitHub if you'd like to build something similar.
+          </p>
+        </div>
       </div>
-    </div>
-  </main>
+    </main>
+
+    <footer>
+      <nav class="flex items-center justify-between mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8" aria-label="Global">
+        <div class="flex lg:flex-1">
+          <p class="text-neutral-400 text-sm">
+            built by
+            <a href="https://jamesconroyfinn.com/" class="font-bold">James Conroy-Finn</a>
+          </p>
+        </div>
+      </nav>
+    </footer>
+  </div>
 </Layout>
 
 <script>
+  import confetti from 'canvas-confetti';
+
   const button = document.getElementById('ping');
   const output = document.getElementById('pong');
+
+  const particles = {
+    spread: 360,
+    ticks: 50,
+    gravity: 0,
+    decay: 0.94,
+    startVelocity: 30,
+    shapes: ['star'],
+    colors: ['FFE400', 'FFBD00', 'E89400', 'FFCA6C', 'FDFFB8']
+  };
+
+  const render = ({ date, msg }) => {
+    return `<span class="font-mono">${date}</span><span>${msg}</span>`;
+  }
 
   if (!button || !output) {
     console.error('Element with IDs "ping" and "pong" not found in the DOM. Shucks!');
@@ -38,8 +92,31 @@ const title = "Startup with Markup";
     button.addEventListener('click', async () => {
       await fetch('/ping', {method: 'POST'}).then(async (response) => {
         const json = await response.json();
+
+        const { bottom, left, right, top } = button.getBoundingClientRect();
+
+        let confettiOpts = {
+          ...particles,
+          origin: {
+            x: ((left + right) / 2) / window.innerWidth,
+            y: ((top + bottom) / 2) / window.innerHeight,
+          },
+        };
+        confetti({
+          ...confettiOpts,
+          particleCount: 40,
+          scalar: 1.2,
+          shapes: ['star']
+        });
+        confetti({
+          ...confettiOpts,
+          particleCount: 10,
+          scalar: 0.75,
+          shapes: ['circle']
+        });
+
         console.log('And our server said:', json);
-        output.innerText = json.msg;
+        output.innerHTML = render(json);
       })
     })
   }

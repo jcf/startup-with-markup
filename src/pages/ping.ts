@@ -1,8 +1,6 @@
 const formatDate = (date: Date): string => {
-  return date.toLocaleDateString("en-GB", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
+  return date.toLocaleTimeString("en-GB", {
+    timeStyle: 'medium',
     timeZone: "UTC",
   });
 };
