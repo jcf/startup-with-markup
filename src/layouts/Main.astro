@@ -8,6 +8,12 @@ const { title } = Astro.props;
 		<meta name="viewport" content="width=device-width" />
     <link rel="icon" href="data:image/x-icon;base64,AA" />
 		<title>{title}</title>
+    {import.meta.env.PROD === true &&
+      <script
+        defer
+        data-domain="startup-with-markup.vercel.app"
+        data-api="/api/event"
+        src="/js/script.js"></script>}
 	</head>
 	<body class="min-h-screen">
 		<slot />
